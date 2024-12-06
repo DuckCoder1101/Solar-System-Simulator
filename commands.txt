@@ -1,0 +1,2 @@
+Imagens para .h
+find ./assets -type f -exec xxd -i {} \; > all_files.h
