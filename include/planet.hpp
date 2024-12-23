@@ -11,32 +11,18 @@ using namespace std;
 class Planet : public RigidBody
 {
 private:
-    double translationVelocity;
-    double orbitRadius;
-    double orbitAngle;
     Star *star;
 
 public:
     Planet(
         string name,
-        Vector2<> position,
-        Vector2<> size,
+        Vector2<> realPosition,
+        double realRadius,
         double mass,
-        double translationVelocity,
-        double orbitRadius,
-        double orbitAngle,
+        Vector2<> v0,
         Star *star);
 
-    double GetTranslation() const;
-    void SetTranslation(double translationVelocity);
-
-    double GetOrbitRadius() const;
-    void SetOrbitRadius(double orbitRadius);
-
-    double GetOrbitAngle() const;
-    void SetOrbitAngle(double orbitAngle);
-
-    Star* GetStar() const;
+    Star *GetStar() const;
 
     void DrawOrbit(SDL_Renderer *renderer, double scale, Vector2<int> screenSize);
 };

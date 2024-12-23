@@ -5,55 +5,21 @@
 
 Planet::Planet(
     string name,
-    Vector2<> position,
-    Vector2<> size,
+    Vector2<> realPosition,
+    double realRadius,
     double mass,
-    double translationVelocity,
-    double orbitRadius,
-    double orbitAngle,
+    Vector2<> v0,
     Star *star)
 {
     this->name = name;
-    this->position = position;
-    this->size = size;
+    this->realPosition = realPosition;
+    this->realRadius = realRadius;
     this->mass = mass;
-    this->translationVelocity = translationVelocity;
-    this->orbitRadius = 0;
-    this->orbitAngle = 0;
+    this->velocity = v0;
     this->star = star;
 }
 
-double Planet::GetTranslation() const
-{
-    return this->translationVelocity;
-}
-
-void Planet::SetTranslation(double translationVelocity)
-{
-    this->translationVelocity = translationVelocity;
-}
-
-double Planet::GetOrbitRadius() const
-{
-    return this->orbitRadius;
-}
-
-void Planet::SetOrbitRadius(double orbitRadius)
-{
-    this->orbitRadius = orbitRadius;
-}
-
-double Planet::GetOrbitAngle() const
-{
-    return this->orbitAngle;
-}
-
-void Planet::SetOrbitAngle(double orbitAngle)
-{
-    this->orbitAngle = orbitAngle;
-}
-
-Star* Planet::GetStar() const
+Star *Planet::GetStar() const
 {
     return this->star;
 }

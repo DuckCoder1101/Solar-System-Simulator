@@ -8,11 +8,11 @@ using std::endl;
 using std::string;
 using std::vector;
 
-GameObject::GameObject(string name, Vector2<> position, Vector2<> size)
+GameObject::GameObject(string name, Vector2<int> position, double radius)
 {
     this->name = name;
     this->position = position;
-    this->size = size;
+    this->radius = radius;
 }
 
 string GameObject::GetName() const
@@ -25,34 +25,24 @@ void GameObject::SetName(string name)
     this->name = name;
 }
 
-Vector2<> GameObject::GetPosition() const
+Vector2<int> GameObject::GetPosition() const
 {
     return this->position;
 }
 
-void GameObject::SetPosition(Vector2<> position)
+void GameObject::SetPosition(Vector2<int> position)
 {
     this->position = position;
 }
 
-Vector2<> GameObject::GetSize() const
+double GameObject::GetRadius() const
 {
-    return this->size;
+    return this->radius;
 }
 
-void GameObject::SetSize(Vector2<> size)
+void GameObject::SetRadius(double radius)
 {
-    this->size = size;
-}
-
-double GameObject::GetRotation() const
-{
-    return this->rotation;
-}
-
-void GameObject::SetRotation(double rotation)
-{
-    this->rotation = rotation;
+    this->radius = radius;
 }
 
 bool GameObject::GetVisible() const
@@ -67,7 +57,7 @@ void GameObject::SetVisible(bool visible)
 
 void GameObject::LoadTexture(SDL_Renderer *renderer, const u_char *bytes, u_int length)
 {
-    SDL_RWops* rw = SDL_RWFromMem(const_cast<u_char*>(bytes), length);
+    SDL_RWops *rw = SDL_RWFromMem(const_cast<u_char *>(bytes), length);
     if (!rw)
     {
         cerr << "Failed to create RWops from memory: " << this->name << " " << SDL_GetError() << endl;
@@ -82,35 +72,24 @@ void GameObject::LoadTexture(SDL_Renderer *renderer, const u_char *bytes, u_int 
     }
 
     this->texture = texture;
-    int textureWidth, textureHeight;
-
-    if (SDL_QueryTexture(texture, NULL, NULL, &textureWidth, &textureHeight))
-    {
-        this->textureSize = Vector2(1, 1);
-        cerr << "Could not load texture size for gameObject " << this->name << SDL_GetError() << endl;
-    }
-
-    else
-    {
-        cout << "Texture size for gameObject " << this->name << ": " << textureWidth << ", " << textureHeight << endl;
-        this->textureSize = Vector2(textureWidth, textureHeight);
-    }
 }
 
 void GameObject::DrawGameObject(SDL_Renderer *renderer, Vector2<int> screenSize)
 {
-    Vector2 screenPos = Vector2(
-        static_cast<int>((this->position.x / this->scale) + (screenSize.x / 2)),
-        static_cast<int>((this->position.y / this->scale) + (screenSize.y / 2)));
+    Vector2<int> center = Vector2<int>(
+        this->position.x - this->radius,
+        this->position.y - this->radius);
 
-    cout << "GameObject: " << this->name << " position: " << screenPos.x << ", " << screenPos.y << endl;
+    int size = round(this->radius * 2);
 
-    // Draw planet
-    SDL_Rect rect = {
-        screenPos.x - this->textureSize.x / 2,
-        screenPos.y - this->textureSize.y / 2,
-        static_cast<int>(this->textureSize.x),
-        static_cast<int>(this->textureSize.y)};
+    if (this->active && this->visible)
+    {
+        SDL_Rect rect = {
+            center.x,
+            center.y,
+            size,
+            size};
 
-    SDL_RenderCopy(renderer, this->texture, NULL, &rect);
+        SDL_RenderCopy(renderer, this->texture, NULL, &rect);
+    }
 }
