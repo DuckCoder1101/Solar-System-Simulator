@@ -123,21 +123,6 @@ void RigidBody::UpdateBody(double dt, Debug *debug)
     // cout << "Real position: " << this->realPosition.x << ", " << this->realPosition.y << endl;
     // cout << "Acceleration: " << this->acceleration.x << ", " << this->acceleration.y << endl;
     // cout << "Velocity: " << this->velocity.x << ", " << this->velocity.y << endl;
-
-    vector<Point> points = {
-        {
-            value : this->realPosition,
-            time : timeInSeconds
-        }
-    };
-    }
-
-    debug->AddDataPoints(this->name, {
-        {
-            value : this->velocity,
-            time : timeInSeconds
-        }
-    });
 }
 
 void RigidBody::Scale(double radiusScale, double positionScale)
